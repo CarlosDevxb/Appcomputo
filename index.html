@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevOps - Desarrollo y Operaciones</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+    header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    header p { font-size: 1.15rem; opacity: 0.9; max-width: 700px; margin: 0 auto; }
+    main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+    .card {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #334155;
+    }
+    .card h2 { color: #60a5fa; margin-bottom: 0.75rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .phase {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .phase span { font-size: 2rem; }
+    .phase h3 { margin: 0.5rem 0; color: #a5b4fc; }
+    ul { padding-left: 1.25rem; }
+    li { margin-bottom: 0.4rem; }
+    code { background: #0f172a; padding: 0.15rem 0.45rem; border-radius: 4px; color: #5eead4; }
+    footer { text-align: center; padding: 2rem 1rem; color: #94a3b8; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚀 DevOps</h1>
+    <p>DevOps combina el desarrollo (<em>Dev</em>) y las operaciones (<em>Ops</em>) para entregar software de forma rápida, confiable y continua.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>¿Qué es DevOps?</h2>
+      <p>Es una cultura y conjunto de prácticas que automatiza y unifica los procesos entre los equipos de desarrollo y operaciones. Su objetivo es acortar el ciclo de vida del desarrollo y entregar valor de forma continua.</p>
+    </section>
+
+    <section class="card">
+      <h2>Ciclo de vida DevOps</h2>
+      <div class="grid">
+        <div class="phase"><span>📦</span><h3>Plan</h3><p>Requisitos y planificación ágil.</p></div>
+        <div class="phase"><span>💻</span><h3>Code</h3><p>Control de versiones con Git.</p></div>
+        <div class="phase"><span>🔧</span><h3>Build</h3><p>Compilación e integración continua (CI).</p></div>
+        <div class="phase"><span>🧪</span><h3>Test</h3><p>Pruebas automatizadas.</p></div>
+        <div class="phase"><span>🚢</span><h3>Release / Deploy</h3><p>Entrega continua (CD).</p></div>
+        <div class="phase"><span>📊</span><h3>Monitor</h3><p>Observabilidad y retroalimentación.</p></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Herramientas populares</h2>
+      <ul>
+        <li><strong>Control de versiones:</strong> Git, GitHub, GitLab</li>
+        <li><strong>CI/CD:</strong> GitHub Actions, Jenkins, GitLab CI</li>
+        <li><strong>Contenedores:</strong> Docker, Kubernetes</li>
+        <li><strong>Infraestructura como código:</strong> Terraform, Ansible</li>
+        <li><strong>Monitoreo:</strong> Prometheus, Grafana</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Ejemplo de pipeline CI/CD</h2>
+      <p>Un flujo típico con GitHub Actions:</p>
+      <p style="margin-top:0.75rem"><code>push</code> → <code>build</code> → <code>test</code> → <code>deploy</code></p>
+      <p style="margin-top:0.75rem">Esta misma página se despliega automáticamente con el workflow incluido en <code>.github/workflows/deploy.yml</code>.</p>
+    </section>
+  </main>
+
+  <footer>
+    App de ejemplo DevOps servida con Node.js &bull; Puerto 3000 &bull; 2026
+  </footer>
+</body>
+</html>

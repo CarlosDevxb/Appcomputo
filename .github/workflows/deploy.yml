@@ -1,0 +1,86 @@
+name: CI + Deploy
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build y verificación
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Verificar sintaxis del servidor
+        run: node --check server.js
+
+      - name: Smoke test del servidor
+        run: |
+          node server.js &
+          SERVER_PID=$!
+          sleep 3
+          curl -f http://localhost:3000/health
+          curl -f http://localhost:3000/ | grep -qi "devops"
+          kill $SERVER_PID
+
+  deploy:
+    name: Deploy
+    needs: build
+    # Solo desplegar en push a main (no en PRs)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # -------------------------------------------------------
+      # OPCIÓN A (activa por defecto): Deploy a Azure Web Apps.
+      # Requiere configurar estos secrets en el repositorio:
+      #   AZURE_WEBAPP_NAME    -> nombre de la Web App en Azure
+      #   AZURE_PUBLISH_PROFILE -> perfil de publicación (descargable desde Azure Portal)
+      # -------------------------------------------------------
+      - name: Deploy a Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: .
+
+      # -------------------------------------------------------
+      # OPCIÓN B (alternativa): Deploy a un VPS por SSH.
+      # Descomenta este bloque y configura los secrets SSH_HOST,
+      # SSH_USER y SSH_KEY si prefieres desplegar en tu propio servidor.
+      # -------------------------------------------------------
+      # - name: Deploy a VPS por SSH
+      #   uses: appleboy/scp-action@v0.1.7
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_KEY }}
+      #     source: "server.js,index.html,package.json"
+      #     target: "~/appcomputo"
+      #
+      # - name: Reiniciar app en VPS
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_KEY }}
+      #     script: |
+      #       cd ~/appcomputo
+      #       npm install --production
+      #       pm2 restart app || pm2 start server.js --name app
